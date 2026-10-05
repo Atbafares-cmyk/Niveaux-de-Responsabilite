@@ -89,13 +89,15 @@ details p{margin-top:8px;font-size:15px;color:var(--muted)}
 .qr{display:flex;flex-direction:column;gap:10px;align-items:center;padding-top:10px}
 .qr svg{width:min(100%,340px);height:auto;border-radius:8px}
 .qr code{font-size:13px;word-break:break-all;text-align:center}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.theme{background:var(--surface);border:2px solid var(--line);border-radius:99px;padding:6px 12px;font-size:13px;font-weight:700;color:var(--ink)}
 .copy{font-size:13px;color:var(--muted);text-align:center;border-top:1px solid var(--line);padding-top:14px}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="eyebrow">Exercice 4</div>
+    <div class="top"><div class="eyebrow">Exercice 4</div><button class="theme" id="theme" aria-label="Changer l’affichage">Affichage sombre</button></div>
     <h1>À quel niveau je place la responsabilité ?</h1>
     <p class="rule">Huit phrases entendues après un livrable rendu en retard. Pour chacune : à quel niveau place-t-elle la responsabilité ?</p>
   </header>
@@ -257,6 +259,11 @@ $("reset").onclick=function(){$("confirm").hidden=false;$("yes").focus()};
 $("no").onclick=function(){$("confirm").hidden=true};
 $("yes").onclick=function(){state={a:[],step:"play",open:-1};save();$("confirm").hidden=true;render();window.scrollTo(0,0)};
 try{$("yr").textContent=new Date().getFullYear()}catch(e){}
+var TKEY="pop-theme";
+function isDark(){var t=document.documentElement.getAttribute("data-theme");if(t)return t==="dark";return window.matchMedia&&matchMedia("(prefers-color-scheme: dark)").matches}
+function applyTheme(t){if(t)document.documentElement.setAttribute("data-theme",t);$("theme").textContent=isDark()?"Affichage clair":"Affichage sombre"}
+try{applyTheme(localStorage.getItem(TKEY))}catch(e){applyTheme(null)}
+$("theme").onclick=function(){var t=isDark()?"light":"dark";try{localStorage.setItem(TKEY,t)}catch(e){}applyTheme(t)};
 load();render();
 </script>
 </body>
